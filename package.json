@@ -22,6 +22,8 @@
   "author": "SLaweck <slaweck7@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.6.1",
+    "debug": "^3.1.0",
     "tuyapi": "^3.0.1"
   },
   "repository": {
