@@ -1,0 +1,10 @@
+{
+    "esversion": 6,
+    "node": true,
+    "devel": true,
+    "curly": true,
+    "eqeqeq": true,
+    "maxdepth": 4,
+    "undef": true,
+    "unused": true
+}
