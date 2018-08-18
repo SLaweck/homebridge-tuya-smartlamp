@@ -1,8 +1,10 @@
 const Tuya = require('tuyapi');
+const TuyaAccessory = require('./lib/TuyaAccessory');
 // const debug = require('debug')('homebridge-tuya');
 
-let hapService;
-let hapCharacteristic;
+let Service;
+let Characteristic;
+const tuyaAccessory = new TuyaAccessory(null, []);
 
 class TuyaSmartLamp {
   constructor(log, config) {
@@ -255,17 +257,17 @@ class TuyaSmartLamp {
 
   getServices() {
     // Setup the HAP services
-    const informationService = new hapService.AccessoryInformation();
+    const informationService = new Service.AccessoryInformation();
     informationService
-      .setCharacteristic(hapCharacteristic.Manufacturer, 'Tuya - SLaweck')
-      .setCharacteristic(hapCharacteristic.Model, 'Led-Smart-Lamp')
-      .setCharacteristic(hapCharacteristic.SerialNumber, this.devId);
-    const bulbService = new hapService.Lightbulb(this.name);
-    bulbService.getCharacteristic(hapCharacteristic.On)
+      .setCharacteristic(Characteristic.Manufacturer, 'Tuya - SLaweck')
+      .setCharacteristic(Characteristic.Model, 'Led-Smart-Lamp')
+      .setCharacteristic(Characteristic.SerialNumber, this.devId);
+    const bulbService = new Service.Lightbulb(this.name);
+    bulbService.getCharacteristic(Characteristic.On)
       .on('set', this.setOnStatus.bind(this))
       .on('get', this.getOnStatus.bind(this));
     if (this.type && this.type.includes('dimmable')) {
-      const brightness = bulbService.getCharacteristic(hapCharacteristic.Brightness);
+      const brightness = bulbService.getCharacteristic(Characteristic.Brightness);
       this.brightnessMin = brightness.props.minValue + brightness.props.minStep;
       this.brightnessMax = brightness.props.maxValue;
       this.brightnessDelta = this.brightnessMax - this.brightnessMin;
@@ -274,7 +276,7 @@ class TuyaSmartLamp {
       brightness.on('set', this.setBrightness.bind(this)).on('get', this.getBrightness.bind(this));
     }
     if (this.type && this.type.includes('tunable')) {
-      const temperature = bulbService.getCharacteristic(hapCharacteristic.ColorTemperature);
+      const temperature = bulbService.getCharacteristic(Characteristic.ColorTemperature);
       this.temperatureMin = temperature.props.minValue;
       this.temperatureMax = temperature.props.maxValue;
       this.temperatureDelta = this.temperatureMax - this.temperatureMin;
@@ -300,8 +302,79 @@ class TuyaSmartLamp {
   }
 }
 
+const callbackify = (promise, callback) => {
+  promise
+    .then(result => callback(null, result))
+    .catch(error => callback(error));
+};
+
+
+class TuyaSmartDevice {
+  constructor(log, config) {
+    this.log = log;
+    this.name = config.name;
+    this.manufacturer = config.manufacturer || 'SLaweck - Tuya';
+    this.model = config.model || 'Smart device';
+    this.devId = config.devId;
+    this.productId = config.productId;
+    this.isLightbulb = config.type.includes('lightbulb');
+    this.brightMin = config.brightMin || 25;
+    this.brightMax = config.brightMax || 255;
+    this.informationService = null;
+    this.tuyaDeviceService = null;
+    tuyaAccessory.addDevice(log, config);
+  }
+
+  getServices() {
+    return [this.getInformationService(), this.getTuyaDeviceService()];
+  }
+
+  getInformationService() {
+    if (this.informationService != null) {
+      return this.informationService;
+    }
+
+    const informationService = new Service.AccessoryInformation();
+
+    informationService
+      .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+      .setCharacteristic(Characteristic.Model, this.model)
+      .setCharacteristic(Characteristic.SerialNumber, this.productId);
+
+    this.informationService = informationService;
+    return informationService;
+  }
+
+  getTuyaDeviceService() {
+    if (this.tuyaDeviceService != null) {
+      return this.tuyaDeviceService;
+    }
+
+    const tuyaDeviceService = this.isLightbulb ? new Service.Lightbulb(this.name) : new Service.Switch(this.name);
+
+    tuyaDeviceService.getCharacteristic(Characteristic.On)
+      .on('get', this.getOnOffStatus.bind(this))
+      .on('set', this.setOnOffStatus.bind(this));
+
+    this.tuyaDeviceService = tuyaDeviceService;
+    return tuyaDeviceService;
+  }
+
+  getOnOffStatus(callback) {
+    callbackify(tuyaAccessory.getOnOff(this.devId), callback);
+  }
+
+  setOnOffStatus(onOff, callback) {
+    callbackify(tuyaAccessory.getOnOff(this.devId, onOff), callback);
+  }
+}
+
 module.exports = (homebridge) => {
-  hapService = homebridge.hap.Service;
-  hapCharacteristic = homebridge.hap.Characteristic;
+  ({ Service } = homebridge.hap);
+  ({ Characteristic } = homebridge.hap);
   homebridge.registerAccessory('homebridge-tuya-smartlamp', 'TuyaSmartLamp', TuyaSmartLamp);
+  homebridge.registerAccessory('homebridge-tuya-smartdevice', 'TuyaSmartDevice', TuyaSmartDevice);
+  // eslint-disable-next-line global-require
+  const TuyaPlatform = require('./lib/TuyaPlatform')(homebridge);
+  homebridge.registerPlatform('homebridge-tuya-platform', 'TuyaPlatform', TuyaPlatform, true);
 };
