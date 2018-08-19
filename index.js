@@ -6,6 +6,7 @@ let Service;
 let Characteristic;
 const tuyaAccessory = new TuyaAccessory(null, { devices: [] });
 
+// eslint-disable-next-line no-unused-vars
 class TuyaSmartLamp {
   constructor(log, config) {
     this.log = log;
@@ -335,6 +336,28 @@ class TuyaSmartDevice {
     return [this.getInformationService(), this.getTuyaDeviceService()];
   }
 
+  identify(callback) {
+    this.log(`Identify ${this.name}`);
+    const getBlinkCb = (onOff, cb) => (error, status) => {
+      if (!error && status) {
+        setTimeout(() => {
+          this.setOnOffStatus(onOff, cb || (() => {}));
+        }, 400);
+      }
+    };
+    this.getOnOffStatus((error, onOff) => {
+      if (!error) {
+        const endBlink = getBlinkCb(onOff, null);
+        const blink4 = getBlinkCb(!onOff, endBlink);
+        const blink3 = getBlinkCb(onOff, blink4);
+        const blink2 = getBlinkCb(!onOff, blink3);
+        const blink1 = getBlinkCb(onOff, blink2);
+        this.setOnOffStatus(!onOff, blink1);
+      }
+    });
+    callback();
+  }
+
   getInformationService() {
     if (this.informationService != null) {
       return this.informationService;
@@ -448,7 +471,7 @@ class TuyaSmartDevice {
 module.exports = (homebridge) => {
   ({ Service } = homebridge.hap);
   ({ Characteristic } = homebridge.hap);
-  homebridge.registerAccessory('homebridge-tuya-smartlamp', 'TuyaSmartLamp', TuyaSmartLamp);
+  // homebridge.registerAccessory('homebridge-tuya-smartlamp', 'TuyaSmartLamp', TuyaSmartLamp);
   homebridge.registerAccessory('homebridge-tuya-smartdevice', 'TuyaSmartDevice', TuyaSmartDevice);
   // eslint-disable-next-line global-require
   // const TuyaPlatform = require('./lib/TuyaPlatform')(homebridge);
