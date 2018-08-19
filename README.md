@@ -53,6 +53,7 @@ Example `config.json` for Tuya based multiple LED Smart Lamp, the second one is 
 To obtain the devId (hint: it has the MAC address in it), the localKey and the productKey, carefully read and review these procedures: [Linking a Tuya Device](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)
 
 Description of config structure:
+
 | Key | Purpose |
 |-----|---------|
 | accessory | obligatory set to "TuyaSmartDevice" |
