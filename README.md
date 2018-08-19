@@ -78,6 +78,6 @@ Tested on the following LED lights (Non affiliated links following):
 
 This plugin should work with any TUYA based LED bulb that can be added to the Tuya or Smart Life apps, or even any Tuya based Samrt Switch (simply set type as an empty string).
 
-LOHAS is a popular brand and theirs products can you found on [LOHAS Lights](http://www.lohas-led.com/) or on Amazon: [LOHAS Lights on Amazon](https://www.amazon.com/s?ie=UTF8&me=A2X4NE86JUW3T&page=1)
+LOHAS is a popular brand and theirs products can be found on [LOHAS Lights](http://www.lohas-led.com/) or on Amazon: [LOHAS Lights on Amazon](https://www.amazon.com/s?ie=UTF8&me=A2X4NE86JUW3T&page=1)
 
 Work in progress...
