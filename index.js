@@ -322,6 +322,7 @@ class TuyaSmartDevice {
     this.isTunable = config.type.includes('tunable');
     this.brightMin = config.brightMin || 25;
     this.brightMax = config.brightMax || 255;
+    this.brightDelta = this.brightMax - this.brightMin;
     this.tempMin = config.tempMin || 0;
     this.tempMax = config.tempMax || 255;
     this.tempDelta = this.tempMax - this.tempMin;
@@ -401,17 +402,21 @@ class TuyaSmartDevice {
   }
 
   setBrightness(brightness, callback) {
-    const bright = this.brightTuya2Home(brightness);
+    const bright = this.brightHome2Tuya(brightness);
     this.log('Set device brightness', bright);
     callbackify(tuyaAccessory.setBright(this.devId, bright), callback);
   }
 
   brightTuya2Home(bright) {
-    return Math.round(((bright - this.brightMin) / this.brightDelta) * this.brightnessDelta + this.brightnessMin);
+    const brightness = Math.round(((bright - this.brightMin) / this.brightDelta) * this.brightnessDelta + this.brightnessMin);
+    this.log('Convert brightness Tuya', bright, '=> HomeKit', brightness);
+    return brightness;
   }
 
   brightHome2Tuya(brightness) {
-    return Math.round(((brightness - this.brightnessMin) / this.brightnessDelta) * this.brightDelta + this.brightMin);
+    const bright = Math.round(((brightness - this.brightnessMin) / this.brightnessDelta) * this.brightDelta + this.brightMin);
+    this.log('Convert brightness HomeKit', brightness, '=> Tuya', bright);
+    return bright;
   }
 
   getTemperature(callback) {
@@ -429,13 +434,13 @@ class TuyaSmartDevice {
 
   tempTuya2Home(temp) {
     const temperature = Math.round(this.temperatureMax - ((temp - this.tempMin) / this.tempDelta) * this.temperatureDelta);
-    this.log('Convert Tuya', temp, '=> HomeKit', temperature);
+    this.log('Convert color temperature Tuya', temp, '=> HomeKit', temperature);
     return temperature;
   }
 
   tempHome2Tuya(temperature) {
     const temp = Math.round(this.tempMax - ((temperature - this.temperatureMin) / this.temperatureDelta) * this.tempDelta);
-    this.log('Convert HomeKit', temperature, ' => Tuya', temp);
+    this.log('Convert color temperature HomeKit', temperature, ' => Tuya', temp);
     return temp;
   }
 }
