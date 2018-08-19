@@ -11,7 +11,7 @@ Example `config.json` for Tuya based LED Smart Lamp that support dimmable and ch
             "name": "Kitchen Light",
             "type": "lightbulb dimmable tunable",
             "manufacturer": "LOHAS",
-            "model": "Smart Lamp Multicolor",
+            "model": "Smart Lamp",
             "devId": "XXXXXXXXXX",
             "localKey": "XXXXXXXXXXXXXX",
             "productKey":"XXXXXXXXXXX",
