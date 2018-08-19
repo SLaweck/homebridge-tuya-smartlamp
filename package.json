@@ -16,8 +16,13 @@
     "tuya",
     "led",
     "smart",
+    "device",
     "lamp",
-    "bulb"
+    "bulb",
+    "switch",
+    "outlet",
+    "socket",
+    "plug"
   ],
   "author": "SLaweck <slaweck7@gmail.com>",
   "license": "MIT",
