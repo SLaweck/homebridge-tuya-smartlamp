@@ -368,7 +368,7 @@ class TuyaSmartDevice {
     informationService
       .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
       .setCharacteristic(Characteristic.Model, this.model)
-      .setCharacteristic(Characteristic.SerialNumber, this.productId);
+      .setCharacteristic(Characteristic.SerialNumber, this.devId.slice(8));
 
     this.informationService = informationService;
     return informationService;
