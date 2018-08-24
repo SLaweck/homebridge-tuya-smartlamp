@@ -1,6 +1,6 @@
 {
   "name": "homebridge-tuya-smartlamp",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "description": "Homebridge plugin for Tuya/Lohas Led Smart Lamp",
   "main": "index.js",
   "scripts": {
