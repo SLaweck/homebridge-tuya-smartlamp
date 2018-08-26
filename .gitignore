@@ -77,4 +77,3 @@ typings/
 
 # Lockfiles
 yarn.lock
-package-lock.json
