@@ -4,11 +4,13 @@
   "description": "Homebridge plugin for Tuya/Lohas Led Smart Lamp",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "hb:test": "homebridge -P config/node_modules/ -U config/ || true",
+    "hb:dev": "cp -a index.js lib config/node_modules/homebridge-tuya-smartlamp/ && DEBUG=TuyaOutlet,TuyaAccessory,TuyaSmartDevice homebridge -D -P config/node_modules/ -U config/ || true"
   },
   "engines": {
     "homebridge": ">=0.4.0",
-    "node": ">=0.12.0"
+    "node": ">=8.0.0"
   },
   "keywords": [
     "homebridge-plugin",
@@ -29,6 +31,7 @@
   "dependencies": {
     "async": "^2.6.1",
     "debug": "^3.1.0",
+    "fakegato-history": "^0.5.2",
     "rxjs": "^6.2.2",
     "tuyapi": "^3.0.1"
   },
