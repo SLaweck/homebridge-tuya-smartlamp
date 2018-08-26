@@ -1,11 +1,12 @@
-const Tuya = require('tuyapi');
+// const Tuya = require('tuyapi');
+const debug = require('debug')('TuyaSmartDevice');
 const TuyaAccessory = require('./lib/TuyaAccessory');
-// const debug = require('debug')('homebridge-tuya');
 
+let homeBridge;
 let Service;
 let Characteristic;
-const tuyaAccessory = new TuyaAccessory(null, { devices: [] });
-
+const tuyaAccessory = new TuyaAccessory();
+/*
 // eslint-disable-next-line no-unused-vars
 class TuyaSmartLamp {
   constructor(log, config) {
@@ -302,7 +303,7 @@ class TuyaSmartLamp {
     callback();
   }
 }
-
+*/
 const callbackify = (promise, callback) => {
   promise
     .then(result => callback(null, result))
@@ -312,6 +313,7 @@ const callbackify = (promise, callback) => {
 
 class TuyaSmartDevice {
   constructor(log, config) {
+    debug('constructor');
     this.log = log;
     this.name = config.name;
     this.manufacturer = config.manufacturer || 'SLaweck - Tuya';
@@ -329,11 +331,19 @@ class TuyaSmartDevice {
     this.tempDelta = this.tempMax - this.tempMin;
     this.informationService = null;
     this.tuyaDeviceService = null;
-    tuyaAccessory.addDevice(log, config);
+    this.tuyaDevice = tuyaAccessory.addDevice(log, config, homeBridge);
   }
 
   getServices() {
-    return [this.getInformationService(), this.getTuyaDeviceService()];
+    let services;
+    if (this.isLightbulb) {
+      debug('getServices lightbulb');
+      services = [this.getInformationService(), this.getTuyaDeviceService()];
+    } else {
+      debug('getServices outlet');
+      services = [this.tuyaDevice.getInformationService(), ...this.tuyaDevice.getDeviceService()];
+    }
+    return services;
   }
 
   identify(callback) {
@@ -469,6 +479,7 @@ class TuyaSmartDevice {
 }
 
 module.exports = (homebridge) => {
+  homeBridge = homebridge;
   ({ Service } = homebridge.hap);
   ({ Characteristic } = homebridge.hap);
   // homebridge.registerAccessory('homebridge-tuya-smartlamp', 'TuyaSmartLamp', TuyaSmartLamp);
