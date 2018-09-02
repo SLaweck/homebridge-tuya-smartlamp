@@ -321,6 +321,8 @@ class TuyaSmartDevice {
     this.devId = config.devId;
     this.productId = config.productId;
     this.isLightbulb = config.type.includes('lightbulb');
+    this.isOutlet = config.type.includes('outlet');
+    this.isTimer = config.type.includes('timersensor');
     this.isDimmable = config.type.includes('dimmable');
     this.isTunable = config.type.includes('tunable');
     this.brightMin = config.brightMin || 25;
@@ -329,22 +331,59 @@ class TuyaSmartDevice {
     this.tempMin = config.tempMin || 0;
     this.tempMax = config.tempMax || 255;
     this.tempDelta = this.tempMax - this.tempMin;
+    this.interval = (config.interval || 30) * 1000;
     this.informationService = null;
     this.tuyaDeviceService = null;
-    this.tuyaDevice = tuyaAccessory.addDevice(log, config, homeBridge);
+    if (!this.isTimer) {
+      this.tuyaDevice = tuyaAccessory.addDevice(log, config, homeBridge);
+    }
   }
 
   getServices() {
     let services;
     if (this.isLightbulb) {
       debug('getServices lightbulb');
-      services = [this.getInformationService(), this.getTuyaDeviceService()];
-    } else {
+      services = [this.tuyaDevice.getInformationService(), ...this.tuyaDevice.getDeviceService()];
+    } else if (this.isOutlet) {
       debug('getServices outlet');
       services = [this.tuyaDevice.getInformationService(), ...this.tuyaDevice.getDeviceService()];
+    } else if (this.isTimer) {
+      debug('getServices timer');
+      services = [this.getTimerInfoService(), this.getTimerDevService()];
+    } else {
+      debug('getServices switch/other');
+      services = [this.getInformationService(), this.getTuyaDeviceService()];
     }
     return services;
   }
+
+  getTimerInfoService() {
+    const timerInfoService = new Service.AccessoryInformation();
+
+    timerInfoService
+      .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+      .setCharacteristic(Characteristic.Model, this.model)
+      .setCharacteristic(Characteristic.SerialNumber, this.devId.slice(0));
+
+    return timerInfoService;
+  }
+
+  getTimerDevService() {
+    const timerDevService = new Service.MotionSensor(this.name);
+
+    let motion = false;
+    const motionDetected = timerDevService.getCharacteristic(Characteristic.MotionDetected)
+      .on('get', callback => callback(null, motion));
+
+    setInterval(() => {
+      motion = !motion;
+      debug('Update motion detect', motion);
+      motionDetected.updateValue(motion);
+    }, this.interval);
+
+    return timerDevService;
+  }
+
 
   identify(callback) {
     this.log(`Identify ${this.name}`);
