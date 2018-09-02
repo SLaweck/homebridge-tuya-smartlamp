@@ -26,6 +26,7 @@ class TuyaSmartDevice {
     this.isLightbulb = config.type.includes('lightbulb');
     this.isOutlet = config.type.includes('outlet');
     this.isTimer = config.type.includes('timersensor');
+    this.interval = (config.interval || 30) * 1000;
     // this.isDimmable = config.type.includes('dimmable');
     // this.isTunable = config.type.includes('tunable');
     // this.brightMin = config.brightMin || 25;
@@ -34,7 +35,6 @@ class TuyaSmartDevice {
     // this.tempMin = config.tempMin || 0;
     // this.tempMax = config.tempMax || 255;
     // this.tempDelta = this.tempMax - this.tempMin;
-    // this.interval = (config.interval || 30) * 1000;
     // this.informationService = null;
     // this.tuyaDeviceService = null;
     if (!this.isTimer) {
