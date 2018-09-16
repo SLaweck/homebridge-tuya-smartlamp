@@ -31,11 +31,11 @@
   "license": "MIT",
   "dependencies": {
     "async": "^2.6.1",
-    "color-convert": "^1.9.2",
-    "debug": "^3.1.0",
+    "color-convert": "^1.9.3",
+    "debug": "^3.2.5",
     "fakegato-history": "^0.5.2",
-    "rxjs": "^6.2.2",
-    "tuyapi": "^3.0.1"
+    "rxjs": "^6.3.2",
+    "tuyapi": "^3.0.2"
   },
   "repository": {
     "type": "git",
@@ -46,6 +46,6 @@
   },
   "homepage": "https://github.com/SLaweck/homebridge-tuya-smartlamp#readme",
   "devDependencies": {
-    "homebridge": "^0.4.44"
+    "homebridge": "^0.4.45"
   }
 }
