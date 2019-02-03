@@ -77,12 +77,14 @@ Description of config structure:
 | model | simply passed to HomeKit, can be found in device details |
 | devId | must be obtained from device [Linking a Tuya Device](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md) |
 | localKey | must be obtained from device [Linking a Tuya Device](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md) |
+| productKey | same as devid. (bug) |
 | brightMin | minimum value which can be set as bulb's brightness, usualy it's 25 for RGB lamps and 11 for others |
 | brightMax | maximum value which can be set as bulb's brightness, default is 255 |
 | tempMin | minimum value which can be set as bulb's warm white light temperature, default is 0 |
 | tempMax | maximum value which can be set as bulb's cool white light temperature, default is 255 |
 | interval | interval in seconds for pooling energy parameters and saving in history for Eve App |
 | enableColor | enable color controls for bulb |
+| ip | specify an ip address |
 
 Tested on the following Smart LED bulbs (Non affiliated links following) and Smart WiFi sockets:
 * [LOHAS WiFi A65 B22 Smart Light Bulbs](https://www.amazon.co.uk/gp/product/B0796NLTFT)
