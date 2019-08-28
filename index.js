@@ -25,6 +25,7 @@ class TuyaSmartDevice {
     this.devId = config.devId;
     this.isLightbulb = config.type.includes('lightbulb');
     this.isOutlet = config.type.includes('outlet');
+    this.isPowerstrip = config.type.includes('powerstrip');
     this.isTimer = config.type.includes('timersensor');
     this.interval = (config.interval || 30) * 1000;
     // this.isDimmable = config.type.includes('dimmable');
@@ -49,6 +50,9 @@ class TuyaSmartDevice {
       services = [this.tuyaDevice.getInformationService(), ...this.tuyaDevice.getDeviceService()];
     } else if (this.isOutlet) {
       debug('getServices outlet');
+      services = [this.tuyaDevice.getInformationService(), ...this.tuyaDevice.getDeviceService()];
+    } else if (this.isPowerstrip) {
+      debug('getServices powerstrip');
       services = [this.tuyaDevice.getInformationService(), ...this.tuyaDevice.getDeviceService()];
     } else if (this.isTimer) {
       debug('getServices timer');
