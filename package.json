@@ -46,6 +46,7 @@
   },
   "homepage": "https://github.com/SLaweck/homebridge-tuya-smartlamp#readme",
   "devDependencies": {
+    "@tuyapi/link": "^0.2.1",
     "homebridge": "^0.4.50"
   }
 }
