@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "hb:test": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && homebridge -P config/node_modules/ -U config/ || true",
-    "hb:dev": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && DEBUG=Tuya* homebridge -D -P config/node_modules/ -U config/ || true"
+    "hb:test": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && homebridge -P config/node_modules/ -U config/ | tee homebridge.test.log || true",
+    "hb:dev": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && DEBUG=Tuya* homebridge -D -P config/node_modules/ -U config/ | tee homebridge.dev.log || true"
   },
   "engines": {
     "homebridge": ">=0.4.0",
