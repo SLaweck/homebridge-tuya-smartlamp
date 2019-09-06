@@ -78,3 +78,5 @@ typings/
 
 # Lockfiles
 yarn.lock
+
+homebridge.dev.log*
