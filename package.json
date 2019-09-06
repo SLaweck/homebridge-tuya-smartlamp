@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "hb:test": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && homebridge -P config/node_modules/ -U config/ | tee homebridge.test.log || true",
-    "hb:dev": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && DEBUG=Tuya* homebridge -D -P config/node_modules/ -U config/ | tee homebridge.dev.log || true"
+    "hb:test": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && homebridge -P config/node_modules/ -U config/ 2>&1 | tee homebridge.test.log || true",
+    "hb:dev": "cp -a package.json index.js lib config/node_modules/homebridge-tuya-smartlamp/ && DEBUG=Tuya* homebridge -D -P config/node_modules/ -U config/ 2>&1 | tee homebridge.dev.log || true"
   },
   "engines": {
     "homebridge": ">=0.4.0",
@@ -33,8 +33,9 @@
     "async": "^2.6.3",
     "color-convert": "^1.9.3",
     "debug": "^3.2.6",
-    "fakegato-history": "^0.5.3",
-    "rxjs": "^6.5.2",
+    "fakegato-history": "^0.5.4",
+    "homebridge-lib": "^4.4.5",
+    "rxjs": "^6.5.3",
     "tuyapi": "^5.1.3"
   },
   "repository": {
