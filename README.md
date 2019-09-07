@@ -99,8 +99,9 @@ Description of config structure:
 | model | simply passed to HomeKit, can be found in device details |
 | devId | must be obtained from device [Linking a Tuya Device](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md) |
 | localKey | must be obtained from device [Linking a Tuya Device](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md) |
-| ip | specify an ip address |
-| brightMin | minimum value which can be set as bulb's brightness, usualy it's 25 for RGB lamps and 11 for others |
+| ip | specify an ip address (optional) |
+| version | TuyAPI protocol version, default is 3.1, for new devices use 3.3 |
+| brightMin | minimum value which can be set as bulb's brightness, usualy it's 25 (default) for RGB bulbs and 11 for others |
 | brightMax | maximum value which can be set as bulb's brightness, default is 255 |
 | tempMin | minimum value which can be set as bulb's warm white light temperature, default is 0 |
 | tempMax | maximum value which can be set as bulb's cool white light temperature, default is 255 |
