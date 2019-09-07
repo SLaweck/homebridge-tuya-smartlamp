@@ -2,6 +2,11 @@
 Homebridge plugin for Lohas/Tuya Led Smart Bulb and Teckin/Tuya Smart Socket
 ===================================
 
+[![npm](https://img.shields.io/npm/v/homebridge-tuya-smartlamp.svg)](https://www.npmjs.com/package/homebridge-tuya-smartlamp)
+[![npm](https://img.shields.io/npm/dt/homebridge-tuya-smartlamp.svg)](https://www.npmjs.com/package/homebridge-tuya-smartlamp)
+[![GitHub last commit](https://img.shields.io/github/last-commit/SLaweck/homebridge-tuya-smartlamp.svg?style=plastic)](https://github.com/SLaweck/homebridge-tuya-smartlamp)
+[![GitHub license](https://img.shields.io/github/license/SLaweck/homebridge-tuya-smartlamp.svg?style=plastic)](https://github.com/SLaweck/homebridge-tuya-smartlamp)
+
 Example `config.json` for Tuya based LED Smart Lamp that support dimmable and changing of color temperature:
 
 ```json
