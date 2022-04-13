@@ -31,7 +31,7 @@
   "author": "SLaweck <slaweck7@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.6.3",
+    "async": "^3.2.2",
     "color-convert": "^1.9.3",
     "debug": "^3.2.6",
     "fakegato-history": "^0.5.4",
